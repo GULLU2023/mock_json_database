@@ -17,10 +17,12 @@ router.use(async (req, res, next) =>{
 
       res.locals.userData = JSON.stringify(data);
 
-      next();
+        
     }catch(error){
-        res.send("Internal Server Error:", error);
+        res.status(500).send("Internal Server Error:", error);
     }
+
+    next();
 });
 
 
