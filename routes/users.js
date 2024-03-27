@@ -1,57 +1,48 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const fs = require('fs').promises;
+const fs = require("fs").promises;
 
-const filePath = require('../database.json');
+const filePath = "./database.json"; //Link to our mock database
+
 
 //Middlewares
-router.use(express.json());
-router.use(express.urlencoded({extended: true}));
-router.use(async (req, res, next) =>{
+router.use(express.json());  // parse JSON
+router.use(express.urlencoded({ extended: true})); //handle form data
+router.use(async (req, res, next) => {
     try{
-    
-      const data = await readData();
-
-      /*We create a userData variable with the database.json stored in it.
-        The res.locals.userData makes it available anywhere in the view. */
-
-      res.locals.userData = JSON.stringify(data);
-
-        
-    }catch(error){
-        res.status(500).send("Internal Server Error:", error);
+        const data = await readData();
+        res.locals.userData = JSON.stringify(data);
+    } catch (error) {
+        res.status(500).send("Internal Server Error", error);
     }
-
-    next();
+ next();
 });
 
 
-//High-level function for reading the data
+//high-level function to show database data
 async function readData(){
-    try{
+    try {
         const data = await fs.readFile(filePath, 'utf-8');
         return JSON.parse(data);
 
-    }catch(error){
-         res.status(500).send("Internal Server Error:", error);
-         //res.send(error);
+    } catch (error) {
+        res.status(500).send("Internal Server Error", error);
     }
 }
 
-//High-level function for writing to the data
+//high-level function to write to the database file
 async function writeData(data){
-    try{
-        //JSON.stringify is used for formatting the JSON data
-        const data = await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-    }catch(error){
-         res.status(500).send("Internal Server Error:", error);
+    try {
+     await fs.writeFile(filePath, JSON.stringify(data, null, 2));
+    } catch (error) {
+        res.status(500).send("Internal Server Error", error);
     }
 }
 
-
-router.get('/', (req, res) =>{
+//Home page route with user data
+router.get("/", (req, res) => {
     const data = res.locals.userData;
-    res.render('home', {data});
+    res.render("home", {data});
 });
 
 
