@@ -14,9 +14,15 @@
     },
     {
       "id": "21",
-      "username": "ExampleUser",
-      "first_name": "Elon",
-      "email": "ElonMusk@gmail.com"
+      "username": "ElonMusk21",
+      "first_name": "Kyle",
+      "email": "I'mNotElonAnymore@gmail.com"
+    },
+    {
+      "id": 22,
+      "username": "aewraewr",
+      "first_name": "werwaerwer",
+      "email": "safasf@gmail.com"
     }
   ]
 }
