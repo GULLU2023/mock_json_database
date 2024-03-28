@@ -46,11 +46,24 @@
       <button type="submit" onclick="updateUser()">Edit User</button>
   </form>      
 
-    </center>
 
+<!--Delete Form-->
+<form id="deleteUserForm" method="POST" action="/users/:id/delete">
+    <input type="number" id="delete_id" name="id" placeholder="User ID" required/>  
+    <button type="submit" onclick="deleteUser()">Delete User</button>
+</form>
 
+</center>
 
     <script>
+        function deleteUser(){
+            var deleteForm = document.getElementById("deleteUserForm");
+            var id = document.getElementById("delete_id").value;
+            deleteForm.action = "/users/" + id + "/delete";
+            deleteForm.submit();
+        }
+
+
         function updateUser(){
             var editForm = document.getElementById("editUserForm");
             var id = document.getElementById("edit_id").value;
