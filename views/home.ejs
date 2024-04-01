@@ -11,10 +11,13 @@
     <h3>Mock JSON Database CRUD Operations</h3>
    
     <%= data %>
-    
+
+
+    <div id="formContainer">  
     <!--Add User Form-->
-    <h4>User Form</h4>
+   
     <form id="addUserForm" method="POST" action="/users">
+        <h4>User (POST method) Form</h4>
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required/>
 
@@ -27,10 +30,11 @@
         <button type="submit">Add User</button>
     </form>
 
+  
   <!--Edit User Form-->
-  <h4>Edit Form</h4>
+  
   <form id="editUserForm" method="POST" action="/users/:id/update">
-
+  <h4>Edit (POST/PUT method) Form</h4>
       <label for="id">User ID:</label>
       <input type="number" id="edit_id" name="id" required/>  
 
@@ -49,10 +53,11 @@
 
 <!--Delete Form-->
 <form id="deleteUserForm" method="POST" action="/users/:id/delete">
+    <h4>Delete User (DELETE or POST method)</h4>
     <input type="number" id="delete_id" name="id" placeholder="User ID" required/>  
     <button type="submit" onclick="deleteUser()">Delete User</button>
 </form>
-
+</div>
 </center>
 
     <script>

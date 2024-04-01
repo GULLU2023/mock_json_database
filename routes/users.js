@@ -1,5 +1,4 @@
 const express = require("express");
-const { read } = require("fs");
 const router = express.Router();
 const fs = require("fs").promises;
 
@@ -40,43 +39,44 @@ async function writeData(data){
     }
 }
 
+//Home page route with user data
+router.get("/", (req, res) => {
+    const data = res.locals.userData;
+    res.render("home", {data});
+});
+
 //Create a new user
-router.post('/users', async (req, res) =>{
+router.post("/users", async (req, res) => {
 
-    try{
+    try {
+        const data = await readData();
+        const lastUser = data.users[data.users.length - 1];
+        const nextId = lastUser ? lastUser.id + 1 : 1;
+        
+        const newUser = {
+            id: nextId,
+            username: req.body.username, 
+            first_name: req.body.first_name,
+            email: req.body.email,
+        };
 
-    const data = await readData();
-    const lastUser = data.users[data.users.length - 1];
-    const lastUserInt = parseInt(lastUser.id);
-    const nextId = lastUser ? lastUserInt + 1 : 1;
+        data.users.push(newUser);
+        await writeData(data);
 
-    const { username, first_name, email } = req.body;
-
-    const newUser = {
-        id: nextId,
-        username: username,
-        first_name: first_name,
-        email: email,
-    }
-
-    data.users.push(newUser);
-
-    await writeData(data);
-
-    res.send("User added successfully");
-
-    } catch (error){
-       res.status(500).send("Internal Server Error", error);
-    }
+        res.send("User added successfully.");
+        } catch (error) {
+             res.status(500).send("Internal Server Error", error);
+        }
 
 });
 
 
-router.post('/users/:id/update', async (req, res) => {
+//Update an existing resource
+router.post("/users/:id/update", async (req, res,) =>{
 
-    try{
+    try {
         const data = await readData();
-        const user = data.users.find(user => user.id == req.params.id);
+        const user = data.users.find(user => user.id === parseInt(req.params.id));
 
         if(user){
             user.username = req.body.new_username || user.username;
@@ -85,56 +85,44 @@ router.post('/users/:id/update', async (req, res) => {
 
             await writeData(data);
 
-            res.send(200).send('User successfully updated.  Updated database:' + JSON.stringify(data.users));
+            res.status(200).send(`User successfully updated. Updated database:` + JSON.stringify(data.users));
+
         } else {
 
-            res.status(404).send("User is not found.");
+            res.status(404).send("User not found.");
         }
-
-    }catch(error){
+    } catch (error) {
         res.status(500).send("Internal Server Error", error);
     }
-});
-
-router.get("/api/v1/users", async (req, res) =>{
-
-   try{
-   const data = await readData();
-
-   res.send(data);
-
-   } catch (error){
-    res.status(500).send("Internal Server Error", error);
-   }
 
 });
 
-//Home page route with user data
-router.get("/", (req, res) => {
-    const data = res.locals.userData;
-    res.render("home", {data});
-});
 
-router.post('/users/:id/delete', async (req,res) =>{
-  try{
-    const data = await readData();
-   
-    const index = data.users.findIndex(user => user.id === parseInt(req.params.id));
-  
-    if(index != -1){
+//Delete an existing resource
+router.post("/users/:id/delete", async (req, res,) =>{
 
-    data.users.splice(index, 1);
+    try {
+        const data = await readData();
+        const index = data.users.findIndex(user => user.id === parseInt(req.params.id));
 
-    await writeData(data);
+        if(index !== -1){
+            
+            data.users.splice(index, 1);
 
-    res.status(200).send("User successfully deleted.");
-    } else {
-        res.send("User is not found!");
+            await writeData(data);
+
+             res.status(200).send(`User successfully updated. Updated database:` + JSON.stringify(data.users));
+
+        } else {
+
+            res.status(404).send("User not found.");
+        }
+    } catch (error) {
+        res.status(500).send("Internal Server Error", error);
     }
-  } catch(error){
-    res.status(500).send("Internal Server Error", error);
-  }
+
 });
 
 
 module.exports = router;
+

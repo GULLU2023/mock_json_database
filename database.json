@@ -1,28 +1,16 @@
 {
   "users": [
     {
-      "id": "1",
-      "username": "Bob23",
-      "first_name": "Bob",
-      "email": "Bob23@gmail.com"
+      "id": 6,
+      "username": "User3",
+      "first_name": "User3",
+      "email": ""
     },
     {
-      "id": "2",
-      "username": "Janet12",
-      "first_name": "Janet",
-      "email": "Janet12@gmail.com"
-    },
-    {
-      "id": "21",
-      "username": "ElonMusk21",
-      "first_name": "Kyle",
-      "email": "I'mNotElonAnymore@gmail.com"
-    },
-    {
-      "id": 22,
-      "username": "aewraewr",
-      "first_name": "werwaerwer",
-      "email": "safasf@gmail.com"
+      "id": 7,
+      "username": "User4",
+      "first_name": "User4",
+      "email": "User4@gmail.com"
     }
   ]
 }
